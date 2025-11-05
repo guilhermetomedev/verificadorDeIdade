@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modelo</title>
+    <style>
+
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            color: white;
+        }
+
+        body, html {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background-color: rgb(148, 66, 255);
+        }
+
+        header {
+            position: absolute;
+            top: 20%;
+        }
+
+        header > h1 {
+            letter-spacing: 3px;
+            font-size: 3rem;
+            text-shadow: 5px 5px 5px rgba(0, 0, 0, 0.397);
+        }
+
+        section#container {
+            display: flex;
+            background-color: rgb(255, 255, 255);
+            padding: 2rem 0 0 1rem;
+            width: 500px;
+            height: 400px;
+            border-radius: 1rem;
+            box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.151);
+        }
+
+        label, input[type='number'] {
+            border: 1 solid black;
+            color: black;
+        }
+
+        button {
+            color: black;
+            padding: 2px ;
+        }
+
+        form > div {
+            margin-bottom: 10px;
+        }
+
+        input[type='number']::-webkit-inner-spin-button,
+        input[type='number']::-webkit-outer-spin-button {
+            -webkit-appearance: none; 
+        }
+
+        div#mensagem {
+            color: black;
+        }
+
+        div.imagem {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            width: 100%;
+            transform: translate(-50%, -30%);
+            margin: auto;
+        }
+
+        div > img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            object-position: center;
+            border-radius: 50%;
+        }
+
+        footer {
+            position: absolute;
+            bottom: 25%;
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+        }
+
+    </style>
+</head>
+<body onload="loading()">
+    <header>
+        <h1 id="horario">Verificador de idade</h1>
+    </header>
+    <section id="container">
+        <div class='container'>
+            <form action="" method="post">
+                <div>
+                    <label for="anodenascimento">Ano de nascimento:</label>
+                    <input type="number" name="anodenascimento" id="anodenascimento">
+                </div>
+                <div>
+                    <label for="">Sexo:
+                    </label>
+                    <input type="radio" name="sex" id="mas" value="mas" checked>
+                    <label for="mas">Masculino</label>
+                    <input type="radio" name="sex" id="fem" value="fem">
+                    <label for="fem">Feminino</label>
+                </div>
+                <button type="button" onclick="verificar()">Verificar</button>
+            </form>
+        </div>
+        <div class="imagem">
+            <img src="imgs2/semidade.png" alt="" id="foto">
+            <div id="mensagem">...</div>
+        </div>
+        
+    </section>
+    <footer>@CursoemVideo</footer>
+
+    <script>
+
+        function verificar(){
+            const anoDeNascimento = document.getElementById('anodenascimento').value;
+            const data = new Date();
+            const anoAtual = data.getFullYear();
+            const idade = anoAtual - Number(anoDeNascimento);
+
+            const sexo = document.querySelector('input[name="sex"]:checked').value;
+            const img = document.getElementById('foto');
+            const output = document.getElementById('mensagem');
+
+            if (anoDeNascimento > anoAtual || anoDeNascimento === ''){
+                alert('[erro] digite novamente o seu ano de nascimento!')
+                return
+
+            } else if (anoDeNascimento == anoAtual){
+                output.innerHTML = `Você é ${sexo === 'mas' ? 'um menino recem-nascido' : 'uma menina recem-nascida'} de poucos meses de vida </br> e nasceu neste ano de ${anoDeNascimento}`
+
+            } else if (idade > 120){
+                alert('[erro] digite novamente um ano de nascimento coerente!')
+                return
+            }
+
+
+
+            
+
+            // Homem
+            if (sexo === 'mas' && idade <= 3 ){
+                img.src = 'imgs2/homem/meninobebe.png'
+
+            } else if (sexo == 'mas' && idade >= 4 && idade <= 11){
+                img.src = 'imgs2/homem/meninocriança.avif'
+
+            } else if (sexo == 'mas' && idade >= 12 && idade <= 18){
+                img.src = 'imgs2/homem/meninojovem.jpg'
+
+            } else if (sexo == 'mas' && idade >= 19 && idade <= 59){
+                img.src = 'imgs2/homem/homemadulto.jpg'
+
+            } else {
+                img.src = 'imgs2/homem/homemidoso.avif'
+            }
+
+            // Mulher
+            if (sexo === 'fem' && idade <= 3 ){
+                img.src = 'imgs2/mulher/meninebebe.jpg'
+
+            } else if (sexo == 'fem' && idade >= 4 && idade <= 11){
+                img.src = 'imgs2/mulher/meninacriança.jpg'
+
+            } else if (sexo == 'fem' && idade >= 12 && idade <= 18){
+                img.src = 'imgs2/mulher/mulherjovem.jpeg'
+
+            } else if (sexo == 'fem' && idade >= 19 && idade <= 59){
+                img.src = 'imgs2/mulher/mulheradulta.webp'
+
+            } else if (sexo === 'fem' && idade >= 60){
+                img.src = 'imgs2/mulher/mulheridosa.avif'
+            }
+
+           if (anoDeNascimento != anoAtual ){
+             output.innerHTML = `Você é ${sexo === 'mas' ? 'um homem' : 'uma mulher'} de ${idade} anos que nasceu em ${anoDeNascimento}`
+           }
+        }
+
+    </script>
+
+</body>
+</html>
